@@ -1,34 +1,53 @@
-一．银行盈利分析（简化）
-
 1、	银行盈利来源
-银行收入：
-	资金需求方通过在银行贷款，银行获取利息。
-	代销信托，保险，基金等代销费用
-	手续费
-银行支出：
-	用户存款利息成本
-	人员工资和办公费用
-	基础设施建设
-	坏账
-2、	模型基本假设
-![image](https://github.com/deng1234/Bank-profitability-analysis/blob/master/model.png)
 
-1)	银行坏账率为8% 
-2)	银行活期存款利率0.35%；银行定期存款三个月利率1.1%；银行定期存款半年1.3%；银行定期存款一年1.5%；银行定期存款两年2.1%；银行定期存款超过三年2.75% 
-3)	国内支行总数为68个（一个省份约2个），支行银行人数约25人，人员工资和办公费用一年约450万，总计30600万
-4)	基础设施建设与维护总计一年约13600万（一个支行200万）。
-5)	贷款利率，一年以内4.35，一年至五年4.75，五年以上4.9 。20%为一年以内贷款，20%为一年至五年贷款，35%为五年以上贷款，15%位流动资金。
-6)	异地存取款手续费异地存取款按金额的1%收取
-7)	银行代售基金佣金费用4%；代售保险佣金费用8% 
-8)	其他未提及的因素暂时忽略不计，银行相关利率一年变动一次,人民币计量单位为万元
-9)	计量时间单位为一年，中间的存取利息默认相互抵消
+银行收入：
+
+    资金需求方通过在银行贷款，银行获取利息。
+
+    代销信托，保险，基金等代销费用
+
+    手续费
+
+
+银行支出：
+
+    用户存款利息成本
+
+    人员工资和办公费用
+
+    基础设施建设
+
+    坏账
+
+
+2、	模型基本假设
+
+    1.银行坏账率为8% 
+
+    2.银行活期存款利率0.35%；银行定期存款三个月利率1.1%；银行定期存款半年1.3%；银行定期存款一年1.5%；银行定期存款两年2.1%；银行定期存款超过三年2.75% 
+
+    3.国内支行总数为68个（一个省份约2个），支行银行人数约25人，人员工资和办公费用一年约450万，总计30600万
+
+    4.基础设施建设与维护总计一年约13600万（一个支行200万）。
+
+    5.贷款利率，一年以内4.35，一年至五年4.75，五年以上4.9 
+    。20%为一年以内贷款，20%为一年至五年贷款，35%为五年以上贷款，15%位流动资金。
+
+    6.异地存取款手续费异地存取款按金额的1%收取
+
+    7.银行代售基金佣金费用4%；代售保险佣金费用8% 
+
+    8.其他未提及的因素暂时忽略不计，银行相关利率一年变动一次,人民币计量单位为万元
+
+    9.计量时间单位为一年，中间的存取利息默认相互抵消
 
 
 3、	银行盈利模型
-
+![image](https://github.com/deng1234/Bank-profitability-analysis/blob/master/model.png)
 
 4、	SQL语句
 
+```
 4.1建库建表语句
 drop database Bank
 create database Bank
@@ -124,16 +143,30 @@ create table CustomerTradeRecord(
 );
 go
 CREATE NONCLUSTERED INDEX CustomerTradeRecord_CustomerTradeRecordID_index ON CustomerTradeRecord(CustomerTradeRecordID DESC)
+```
+
+
 4.2数据模拟语句
+
+```
 4.2.1成本表模拟2015,2016,2017三年的数据
 INSERT INTO Cost(totalInfrastructure,badAccountRate,totalSalary,variableRate,threeMonthRate,sixMonthRate,oneYearRate,twoYearRate,threeYearRate,years) VALUES(13600,0.08,30600,0.0035,0.011,0.013,0.015,0.021,0.0275,2015);
 INSERT INTO Cost(totalInfrastructure,badAccountRate,totalSalary,variableRate,threeMonthRate,sixMonthRate,oneYearRate,twoYearRate,threeYearRate,years) VALUES(14000,0.07,31000,0.0030,0.019,0.011,0.011,0.019,0.0245,2016);
 INSERT INTO Cost(totalInfrastructure,badAccountRate,totalSalary,variableRate,threeMonthRate,sixMonthRate,oneYearRate,twoYearRate,threeYearRate,years) VALUES(14600,0.09,31600,0.0032,0.010,0.012,0.012,0.020,0.0255,2017);
+```
+
 4.2.2收入表模拟数据
+
+``
 INSERT INTO Income(oneYearRate,oneYearToFiveYearRate,overFiveYearRate,otherPlaceRate,fundRate,insuranceRate) VALUES(0.0435,0.0475,0.049,0.01,0.04,0.08)
 INSERT INTO Income(oneYearRate,oneYearToFiveYearRate,overFiveYearRate,otherPlaceRate,fundRate,insuranceRate) VALUES(0.0455,0.0495,0.051,0.01,0.04,0.08)
 INSERT INTO Income(oneYearRate,oneYearToFiveYearRate,overFiveYearRate,otherPlaceRate,fundRate,insuranceRate) VALUES(0.0425,0.0455,0.048,0.01,0.04,0.08)
+```
+
+
 4.2.3用户交易表数据生成JavaScript脚本
+
+```
 // -----基本假设------
 // 总存款1万以下的用户为5%
 // 总存款在1万到10万的用户为10%
@@ -243,7 +276,12 @@ INSERT INTO Income(oneYearRate,oneYearToFiveYearRate,overFiveYearRate,otherPlace
             return num;
         }
         console.log(result);
+```
+
+
 4.2.4盈利能力分析过程
+
+```
 --平均固定成本
 with averageFixedCost as(
 	select b.CustomerTradeRecordID,a.Totalinfrastructure/(select count(*) from CustomerTradeRecord) as 'averageInfrastructure',
@@ -283,7 +321,7 @@ c.toalIncome-(a.AveragebadAccound+b.averageInfrastructure+b.averageSalary) as 't
 from averageVariableCost as a 
 join averageFixedCost as b on a.CustomerTradeRecordID = b.CustomerTradeRecordID 
 join totalIncome as c on a.CustomerTradeRecordID = c.CustomerTradeRecordID 
-
+```
 
 5、	总结
 通过模拟数据以及一系列的计算，得出银行的42.02的客户是盈利的，57.98的客户是亏损的。银行10.8%的客户为银行提供了80%的利润。
