@@ -11,6 +11,7 @@
 	基础设施建设
 	坏账
 2、	模型基本假设
+![image](https://github.com/deng1234/Bank-profitability-analysis/blob/master/model.png)
 
 1)	银行坏账率为8% 
 2)	银行活期存款利率0.35%；银行定期存款三个月利率1.1%；银行定期存款半年1.3%；银行定期存款一年1.5%；银行定期存款两年2.1%；银行定期存款超过三年2.75% 
