@@ -2,22 +2,22 @@
 
 银行收入：
 
-    资金需求方通过在银行贷款，银行获取利息。
+    1.资金需求方通过在银行贷款，银行获取利息。
 
-    代销信托，保险，基金等代销费用
+    2.代销信托，保险，基金等代销费用
 
-    手续费
+    3.手续费
 
 
 银行支出：
 
-    用户存款利息成本
+    1.用户存款利息成本
 
-    人员工资和办公费用
+    2.人员工资和办公费用
 
-    基础设施建设
+    3.基础设施建设
 
-    坏账
+    4.坏账
 
 
 2、	模型基本假设
@@ -43,6 +43,8 @@
 
 
 3、	银行盈利模型
+
+
 ![image](https://github.com/deng1234/Bank-profitability-analysis/blob/master/model.png)
 
 4、	SQL语句
@@ -148,8 +150,9 @@ CREATE NONCLUSTERED INDEX CustomerTradeRecord_CustomerTradeRecordID_index ON Cus
 
 4.2数据模拟语句
 
-```
+
 4.2.1成本表模拟2015,2016,2017三年的数据
+```
 INSERT INTO Cost(totalInfrastructure,badAccountRate,totalSalary,variableRate,threeMonthRate,sixMonthRate,oneYearRate,twoYearRate,threeYearRate,years) VALUES(13600,0.08,30600,0.0035,0.011,0.013,0.015,0.021,0.0275,2015);
 INSERT INTO Cost(totalInfrastructure,badAccountRate,totalSalary,variableRate,threeMonthRate,sixMonthRate,oneYearRate,twoYearRate,threeYearRate,years) VALUES(14000,0.07,31000,0.0030,0.019,0.011,0.011,0.019,0.0245,2016);
 INSERT INTO Cost(totalInfrastructure,badAccountRate,totalSalary,variableRate,threeMonthRate,sixMonthRate,oneYearRate,twoYearRate,threeYearRate,years) VALUES(14600,0.09,31600,0.0032,0.010,0.012,0.012,0.020,0.0255,2017);
@@ -157,7 +160,7 @@ INSERT INTO Cost(totalInfrastructure,badAccountRate,totalSalary,variableRate,thr
 
 4.2.2收入表模拟数据
 
-``
+```
 INSERT INTO Income(oneYearRate,oneYearToFiveYearRate,overFiveYearRate,otherPlaceRate,fundRate,insuranceRate) VALUES(0.0435,0.0475,0.049,0.01,0.04,0.08)
 INSERT INTO Income(oneYearRate,oneYearToFiveYearRate,overFiveYearRate,otherPlaceRate,fundRate,insuranceRate) VALUES(0.0455,0.0495,0.051,0.01,0.04,0.08)
 INSERT INTO Income(oneYearRate,oneYearToFiveYearRate,overFiveYearRate,otherPlaceRate,fundRate,insuranceRate) VALUES(0.0425,0.0455,0.048,0.01,0.04,0.08)
